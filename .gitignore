@@ -1,0 +1,51 @@
+# # # DADOS DE EXECUÇÃO E SESSÃO # # #
+# Ignora a pasta de tokens do Venom Bot (MUITO IMPORTANTE!)
+/tokens/
+
+# Ignora a pasta de logs da aplicação
+/logs/
+
+
+# # # DEPENDÊNCIAS # # #
+# A pasta node_modules é a mais importante a ser ignorada.
+# Ela é gerada pelo 'npm install' e é específica para cada máquina.
+/node_modules/
+
+
+# # # LOGS E ARQUIVOS DE DEBUG # # #
+# Ignora logs de debug do npm e yarn
+npm-debug.log*
+yarn-debug.log
+yarn-error.log
+
+# Ignora arquivos de log genéricos
+*.log
+
+
+# # # ARQUIVOS DE AMBIENTE # # #
+# Arquivos .env contêm segredos e chaves de API. NUNCA devem ser versionados.
+# É uma boa prática criar um arquivo .env.example com as variáveis necessárias
+# e adicionar esse arquivo ao repositório.
+.env
+.env.*
+!.env.example
+
+
+# # # PASTAS DE BUILD E RELATÓRIOS # # #
+# Se no futuro você usar TypeScript ou um bundler, estas pastas serão geradas.
+/dist/
+/build/
+/coverage/
+
+
+# # # ARQUIVOS DE SISTEMA OPERACIONAL # # #
+# Arquivos de sistema do macOS e Windows
+.DS_Store
+Thumbs.db
+
+
+# # # ARQUIVOS DE CONFIGURAÇÃO DE EDITORES # # #
+# Ignora configurações de editores de código populares como VS Code e JetBrains.
+.vscode/
+.idea/
+*.sublime-workspace

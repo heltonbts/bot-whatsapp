@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  whatsapp-bot:
+    build: .
+    container_name: whatsapp-venom-bot
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # Adicione esta linha para aumentar a memória compartilhada
+    shm_size: "2gb"
+    volumes:
+      - ./tokens:/app/tokens
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - TZ=America/Sao_Paulo
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
