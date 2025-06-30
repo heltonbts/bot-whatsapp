@@ -52,7 +52,7 @@ async function start() {
           // ... e outras flags que você pode testar remover
         ],
         refreshQR: 15000,
-        autoClose: 60000,
+        autoClose: 180000,
         disableSpins: true,
         disableWelcome: true,
         updatesLog: true,
