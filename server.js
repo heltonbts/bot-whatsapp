@@ -30,6 +30,8 @@ async function connectToWhatsApp() {
     auth: state,
     logger: pino({ level: "silent" }),
     browser: Browsers.macOS("Desktop"),
+    version: [2, 2523, 4], // Tenta forçar uma versão específica do WhatsApp Web
+    syncFullHistory: true,
   });
 
   // Gerenciador de eventos da conexão
@@ -113,12 +115,10 @@ function startExpressServer() {
     }
 
     if (!to || !message) {
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          message: 'Campos "to" e "message" são obrigatórios.',
-        });
+      return res.status(400).json({
+        status: "error",
+        message: 'Campos "to" e "message" são obrigatórios.',
+      });
     }
 
     const formattedNumber = to.includes("@s.whatsapp.net")
@@ -130,12 +130,10 @@ function startExpressServer() {
       const [result] = await sock.onWhatsApp(formattedNumber);
 
       if (!result?.exists) {
-        return res
-          .status(404)
-          .json({
-            status: "error",
-            message: "O número de destino não existe no WhatsApp.",
-          });
+        return res.status(404).json({
+          status: "error",
+          message: "O número de destino não existe no WhatsApp.",
+        });
       }
 
       // Envia um "ping" de presença para estabelecer/validar a sessão de criptografia
@@ -151,13 +149,11 @@ function startExpressServer() {
       res.status(200).json({ status: "success", message: "Mensagem enviada!" });
     } catch (error) {
       console.error("❌ Erro ao enviar mensagem:", error);
-      res
-        .status(500)
-        .json({
-          status: "error",
-          message: "Falha ao enviar a mensagem.",
-          error: error.message,
-        });
+      res.status(500).json({
+        status: "error",
+        message: "Falha ao enviar a mensagem.",
+        error: error.message,
+      });
     }
   });
 
