@@ -7,7 +7,7 @@ const {
 const express = require("express");
 const pino = require("pino");
 const { Boom } = require("@hapi/boom");
-const qrcode = require("qrcode-terminal"); // <- Importa a nova biblioteca
+const qrcode = require("qrcode-terminal");
 
 const app = express();
 app.use(express.json());
@@ -126,6 +126,7 @@ function startExpressServer() {
       : `${to.replace(/\D/g, "")}@s.whatsapp.net`;
 
     try {
+      // Verifica se o número existe no WhatsApp antes de enviar
       const [result] = await sock.onWhatsApp(formattedNumber);
 
       if (!result?.exists) {
@@ -137,7 +138,16 @@ function startExpressServer() {
           });
       }
 
+      // Envia um "ping" de presença para estabelecer/validar a sessão de criptografia
+      console.log(`Pinging ${formattedNumber} para estabelecer a sessão...`);
+      await sock.sendPresenceUpdate("available", formattedNumber);
+
+      // Uma pequena pausa para garantir que a presença seja processada
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      console.log(`Enviando a mensagem de texto para ${formattedNumber}...`);
       await sock.sendMessage(formattedNumber, { text: message });
+
       res.status(200).json({ status: "success", message: "Mensagem enviada!" });
     } catch (error) {
       console.error("❌ Erro ao enviar mensagem:", error);
