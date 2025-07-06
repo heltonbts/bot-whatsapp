@@ -1,4 +1,8 @@
-node_modules
+# Ignorar arquivos de sessão e tokens
+tokens/
+
+# Ignorar dependências que serão instaladas no container
+node_modules/
+
+# Ignorar logs de debug
 npm-debug.log
-Dockerfile
-.dockerignore
